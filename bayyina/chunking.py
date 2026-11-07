@@ -36,39 +36,35 @@ def chunk_text(doc_id: str, text: str, max_chars: int = 500, overlap: int = 50) 
             window = text[start: start + max_chars]
             min_cut = max_chars // 2
 
-            # Priority 1: last paragraph break.
-            paragraph_cuts = [
-                i + 2
-                for i in range(max(0, min_cut - 2), max_chars - 1)
-                if window[i: i + 2] == "\n\n"
-            ]
+            window = text[start: start + max_chars]
+            min_cut = max_chars // 2
+            cut = max_chars  # Default to hard cut if nothing is found
+            found_cut = False
 
-            if paragraph_cuts:
-                cut = max(paragraph_cuts)
+            # Priority 1: last paragraph break (\n\n at c-2, c-1)
+            for c in range(max_chars, min_cut - 1, -1):
+                if c >= 2 and window[c - 2: c] == "\n\n":
+                    cut = c
+                    found_cut = True
+                    break
 
-            else:
-                # Priority 2: last sentence ending.
-                sentence_cuts = [
-                    i + 1
-                    for i, char in enumerate(window)
-                    if min_cut <= i + 1 <= max_chars
-                    and char in _SENTENCE_ENDINGS
-                ]
+            # Priority 2: last sentence ending
+            if not found_cut:
+                for c in range(max_chars, min_cut - 1, -1):
+                    if c >= 1 and window[c - 1] in _SENTENCE_ENDINGS:
+                        cut = c
+                        found_cut = True
+                        break
 
-                if sentence_cuts:
-                    cut = max(sentence_cuts)
+            # Priority 3: last whitespace
+            if not found_cut:
+                for c in range(max_chars, min_cut - 1, -1):
+                    if c >= 1 and window[c - 1].isspace():
+                        cut = c
+                        found_cut = True
+                        break
 
-                else:
-                    # Priority 3: last whitespace.
-                    whitespace_cuts = [
-                        i + 1
-                        for i, char in enumerate(window)
-                        if min_cut <= i + 1 <= max_chars
-                        and char.isspace()
-                    ]
-
-                    # Hard cut only if no preferred cut point exists.
-                    cut = max(whitespace_cuts) if whitespace_cuts else max_chars
+            raw_end = start + cut
 
             raw_end = start + cut
 
