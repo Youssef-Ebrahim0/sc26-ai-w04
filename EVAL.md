@@ -8,9 +8,8 @@ overlaps one of the query's `relevant` ranges in the same document.
 
 | Retriever | recall@3 | queries missed |
 |---|---|---|
-| BM25 only | | |
-| Dense only (HashingEmbedder) | | |
-| Hybrid (RRF) | | |
+| BM25 only | 0.83 (10/12) | 2 |
+| Dense only (HashingEmbedder) | 0.83 (10/12) | 2 |
+| Hybrid (RRF) | 0.92 (11/12) | 1 |
 
-<!-- Two or three sentences: what the misses have in common, and what you would try next
-     (a real embedding model, contextual chunk headers, a re-ranker, different chunk size). -->
+The single query missed by the hybrid retriever ("governing law and competent court for the agency agreement") likely suffers from cross-lingual or semantic vocabulary mismatch, as neither exact-match BM25 nor the character-level `HashingEmbedder` can map English legal terms to their Arabic counterparts or synonyms. To resolve this, the next steps would be replacing the hashing embedder with a true multilingual semantic model (such as `intfloat/multilingual-e5-small`) and adding a cross-encoder re-ranker to capture deeper semantic relevance.
