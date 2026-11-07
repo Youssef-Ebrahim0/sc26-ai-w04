@@ -2,7 +2,7 @@
 
 ## Tools I used, and for what
 
-I wrote `bayyina/normalize.py`and `cite.py` manually from scratch. I used ChatGPT with iterative prompt engineering to generate the initial drafts for `chunking.py`, `bm25.py`, `hybrid.py`. I then used Gemini as a debugging partner to write a comprehensive `test_all_requirements.py` suite, fix `Chunk` dataclass attribute errors in the tests, and write the `eval_script.py` to calculate the real evaluation metrics. Finally, I manually reviewed all the generated code files, refactored and removed the overengineered parts to ensure clean, readable code, and visually traced the logic step-by-step to guarantee it matched the requirements perfectly.
+I wrote `bayyina/normalize.py` and `cite.py` manually from scratch. I used ChatGPT with iterative prompt engineering to generate the initial drafts for `chunking.py`, `bm25.py`, `hybrid.py`. I then used Gemini as a debugging partner to write a comprehensive `test_all_requirements.py` suite, fix `Chunk` dataclass attribute errors in the tests, and write the `eval_script.py` to calculate the real evaluation metrics. Finally, I manually reviewed all the generated code files, refactored and removed the overengineered parts to ensure clean, readable code, and visually traced the logic step-by-step to guarantee it matched the requirements perfectly.
 
 ## Where AI-written chunking or BM25 code broke one of the spec's rules
 
